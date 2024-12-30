@@ -37,4 +37,30 @@ public class TestService {
         Assertions.assertEquals("Война и мир, 1898 автор Л.Н.Толстой, знаменитый русский писатель", bookDescription);
 
     }
+
+    @Test
+    void testCreateBookDescriptionComplexLogic() throws SQLException {
+        BookService bookService = new BookService();
+        AuthorService mockAuthorService = Mockito.mock(AuthorService.class);
+        bookService.setAuthorService(mockAuthorService);
+
+        Mockito
+                .when(mockAuthorService.getAuthorDescription(Mockito.anyInt()))
+                .thenAnswer(invocationOnMock  -> {
+                    int authorId = invocationOnMock.getArgument(0, Integer.class);
+
+                    if(authorId % 2 == 0){
+                        return "великий русский писатель";
+                    } else {
+                        //нечётные id у английских авторов
+                        return "великий английский писатель";
+                    }
+                });
+
+        String bookDescriptionEnglish = bookService.createBookDescription("Гамлет", 1599, 11, "Уильям Шекспир");
+        Assertions.assertEquals("Гамлет, 1599 автор Уильям Шекспир, великий английский писатель", bookDescriptionEnglish);
+
+        String bookDescriptionRussian = bookService.createBookDescription("Война и мир", 1898, 6, "Л.Н.Толстой");
+        Assertions.assertEquals("Война и мир, 1898 автор Л.Н.Толстой, великий русский писатель", bookDescriptionRussian);
+    }
 }
