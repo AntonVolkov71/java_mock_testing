@@ -8,4 +8,9 @@ public class AuthService2 {
         //найти в базе данных список уникальных авторов для заданных книг
         return Collections.emptyList();
     }
+
+    public String getAuthorDescription(int authorId) {
+        //сложная логика по формированию описания автора из базы данных
+        return "описание";
+    }
 }

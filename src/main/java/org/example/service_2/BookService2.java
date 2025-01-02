@@ -24,4 +24,17 @@ public class BookService2 {
 
         return result.toString();
     }
+
+    public String createBookDescription(String bookName, int creationYear, int authorId, String authorName) {
+        StringBuffer description = new StringBuffer();
+        description.append(bookName).append(", ");
+        description.append(creationYear);
+
+        String authorDescription = authorService.getAuthorDescription(authorId);
+        description.append(" автор ");
+        description.append(authorName).append(", ");
+        description.append(authorDescription);
+
+        return description.toString();
+    }
 }
